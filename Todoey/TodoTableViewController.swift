@@ -10,11 +10,15 @@ import UIKit
 
 class TodoTableViewController: UITableViewController {
 
-    var itemArray = ["walk the dog", "cook dinner", "fill up gas tank"]
+    var itemArray = [""]
+    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
+        if let items = defaults.array(forKey: "ToDoList") as? [String] {
+            itemArray = items
+        }
         
     }
     //MARK:- Table View Delegates
@@ -47,6 +51,9 @@ class TodoTableViewController: UITableViewController {
         let action = UIAlertAction(title: "Done", style: .default) { (action) in
             if textField.text != nil {
             self.itemArray.append(textField.text!)
+                
+            self.defaults.set(self.itemArray, forKey: "ToDoList")
+                
             self.tableView.reloadData()
             }
         }
